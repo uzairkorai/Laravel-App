@@ -1,3 +1,4 @@
+import { data } from 'autoprefixer'
 import { createStore } from 'vuex'
 import axiosClient from '../axios'
 
@@ -6,6 +7,10 @@ const store = createStore({
         user: {
             data: {},
             token: sessionStorage.getItem("TOKEN")
+        },
+        dashboard: {
+            loading: false,
+            data: {}
         },
         currentSurvey: {
             loading: false,
@@ -25,6 +30,19 @@ const store = createStore({
     },
     getters: {},
     actions: {
+        getDashboardData({ commit }) {
+            commit('dashboardLoading', true)
+            return axiosClient.get('/dashboard')
+                .then((res) => {
+                    commit('dashboardLoading', false)
+                    commit('setDashboardData', res.data)
+                    return res;
+                })
+                .catch(error => {
+                    commit('dashboardLoading', false)
+                    return error;
+                })
+        },
         getSurvey({ commit }, id) {
             commit("setCurrentSurveyLoading", true);
             return axiosClient
@@ -83,6 +101,9 @@ const store = createStore({
                     throw err;
                 })
         },
+        saveSurveyAnswer({ commit }, { surveyId, answers }) {
+            return axiosClient.post(`/survey/${surveyId}/answer`, { answers })
+        },
         register({ commit }, user) {
             return axiosClient.post('/register', user)
                 .then((data) => {
@@ -106,8 +127,14 @@ const store = createStore({
         },
     },
     mutations: {
+        dashboardLoading: (state, loading) => {
+            state.dashboard.loading = loading;
+        },
+        setDashboardData: (state, data) => {
+            state.dashboard.data = data;
+        },
         setSurveysLoading: (state, loading) => {
-            state.surveys.loading = loading;
+            state.loading = loading;
         },
         setCurrentSurveyLoading: (state, loading) => {
             state.currentSurvey.loading = loading;
