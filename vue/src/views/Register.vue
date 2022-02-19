@@ -33,7 +33,16 @@
         </p>
       </div>
       <form class="mt-8 space-y-6" @submit="register">
-        <input type="hidden" name="remember" value="true" />
+        <Alert
+          v-if="Object.keys(errors).length"
+          class="flex-col items-stretch text-sm"
+        >
+          <div v-for="(field, i) of Object.keys(errors)" :key="i">
+            <div v-for="(error, ind) of errors[field] || []" :key="ind">
+              * {{ error }}
+            </div>
+          </div>
+        </Alert>
         <div class="rounded-md shadow-sm -space-y-px">
           <div>
             <label for="name" class="sr-only">First Name</label>
@@ -174,6 +183,7 @@
 
         <div>
           <button
+            :disabled="loading"
             type="submit"
             class="
               group
@@ -195,7 +205,32 @@
               focus:ring-offset-2
               focus:ring-indigo-500
             "
+            :class="{
+              'cursor-not-allowed': loading,
+              'hover:bg:text-indigo-500': loading,
+            }"
           >
+            <svg
+              v-if="loading"
+              class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <circle
+                class="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                stroke-width="4"
+              ></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+              ></path>
+            </svg>
             Sign Up
           </button>
         </div>
@@ -205,8 +240,10 @@
 </template>
 
 <script setup>
+import Alert from "../components/Alert.vue";
 import store from "../store";
 import { useRouter } from "vue-router";
+import { ref } from "vue";
 
 const router = useRouter();
 const user = {
@@ -215,12 +252,24 @@ const user = {
   password: "",
 };
 
+const loading = ref(false);
+const errors = ref({});
+
 function register(ev) {
   ev.preventDefault();
-  store.dispatch("register", user).then((res) => {
-    router.push({
-      name: "Dashboard",
+  loading.value = true;
+  store
+    .dispatch("register", user)
+    .then(() => {
+      router.push({
+        name: "Dashboard",
+      });
+    })
+    .catch((error) => {
+      loading.value = false;
+      if (error.response.status === 422) {
+        errors.value = error.response.data.errors;
+      }
     });
-  });
 }
 </script>

@@ -93,7 +93,7 @@ const store = createStore({
                 .get(`/survey-by-slug/${slug}`)
                 .then((res) => {
                     commit("setCurrentSurvey", res.data);
-                    commit("setCurentSurveyLoading", false);
+                    commit("setCurrentSurveyLoading", false);
                     return res;
                 })
                 .catch((err) => {
