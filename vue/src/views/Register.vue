@@ -72,6 +72,32 @@
             />
           </div>
           <div>
+            <label for="username" class="sr-only">First Name</label>
+            <input
+              name="username"
+              required
+              v-model="user.username"
+              class="
+                appearance-none
+                rounded-none
+                relative
+                block
+                w-full
+                px-3
+                py-2
+                border border-gray-300
+                placeholder-gray-500
+                text-gray-900
+                focus:outline-none
+                focus:ring-indigo-500
+                focus:border-indigo-500
+                focus:z-10
+                sm:text-sm
+              "
+              placeholder="Username"
+            />
+          </div>
+          <div>
             <label for="email-address" class="sr-only">Email address</label>
             <input
               name="email"
@@ -248,6 +274,7 @@ import { ref } from "vue";
 const router = useRouter();
 const user = {
   name: "",
+  username: "",
   email: "",
   password: "",
 };

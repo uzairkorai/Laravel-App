@@ -59,7 +59,7 @@
         "
       >
         <h3 class="text-2xl font-semibold">Latest Survey</h3>
-        <img :src="data.latestSurvey.img_url" class="w-[240px] mx-auto" />
+        <img :src="data.latestSurvey.image_url" class="w-[240px] mx-auto" />
         <h3 class="font-bold text-xl mb-3">{{ data.latestSurvey.title }}</h3>
         <div class="flex justify-between text-sm mb-1">
           <div>Create Date:</div>
@@ -83,6 +83,7 @@
         </div>
         <div class="flex justify-between">
           <router-link
+            link
             :to="{ name: 'SurveyView', params: { id: data.latestSurvey.id } }"
             class="
               flex
@@ -112,6 +113,7 @@
             >Edit Survey</router-link
           >
           <button
+            link
             class="
               flex
               py-2
@@ -170,12 +172,13 @@
           v-for="answer of data.latestAnswers"
           :key="answer.id"
           class="block p-2 hover:bg-gray-100/90"
-        ></a>
-        <!-- <div class="font-semibold">{{ answer.survey.title }}</div> -->
-        <small>
-          Answer Made at:
-          <!-- <i class="font-semibold">{{ data.answer.end_date }}</i> -->
-        </small>
+        >
+          <div class="font-semibold">{{ answer.survey.title }}</div>
+          <small>
+            Answer Made at:
+            <i class="font-semibold">{{ answer.end_date }}</i>
+          </small>
+        </a>
       </div>
     </div>
   </page-component>

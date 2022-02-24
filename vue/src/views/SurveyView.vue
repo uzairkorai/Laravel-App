@@ -12,13 +12,25 @@
             link
             :href="`/view/survey/${model.slug}`"
             target="_blank"
-            class="mr-2"
+            class="
+              py-2
+              px-4
+              border border-transparent
+              text-sm
+              rounded-md
+              text-indigo-500
+              hover:bg-indigo-700 hover:text-white
+              transition-colors
+            "
           >
-            <ExternalLinkIcon class="w-5 h-5" />
-            View Public link
+            <ExternalLinkIcon class="w-5 h-5 inline-block" /> View Public link
           </button>
-          <button v-if="route.params.id" color="red" @click="deleteSurvey()">
-            <TrashIcon class="w-5 h-5 mr-2" />
+          <button
+            v-if="route.params.id"
+            @click="deleteSurvey()"
+            class="py-2 px-3 text-white bg-red-500 rounded-md hover:bg-red-500"
+          >
+            <TrashIcon class="w-5 h-5 mt-1 inline-block" />
             Delete
           </button>
         </div>
@@ -310,6 +322,7 @@ let model = ref({
   slug: "",
   status: false,
   description: null,
+  image: null,
   image_url: null,
   expire_date: null,
   questions: [],

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * User: Zura
  * Date: 12/19/2021
@@ -26,6 +27,7 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string',
+            'username' => 'required|string',
             'email' => 'required|email|string|unique:users,email',
             'password' => [
                 'required',
@@ -37,6 +39,7 @@ class AuthController extends Controller
         /** @var \App\Models\User $user */
         $user = User::create([
             'name' => $data['name'],
+            'username' => $data['username'],
             'email' => $data['email'],
             'password' => bcrypt($data['password'])
         ]);
@@ -85,5 +88,4 @@ class AuthController extends Controller
             'success' => true
         ]);
     }
-
 }

@@ -4,7 +4,7 @@
     <form @submit.prevent="submitSurvey" v-else class="container mx-auto">
       <div class="grid grid-cols-6 items-center">
         <div class="mr-4">
-          <img :src="survey.image" alt="" />
+          <img :src="survey.image_url" alt="" />
         </div>
         <div class="col span-5">
           <h1 class="text-3xl mb-3">{{ survey.title }}</h1>
